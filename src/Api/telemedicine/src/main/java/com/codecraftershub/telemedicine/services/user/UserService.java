@@ -102,6 +102,7 @@ public class UserService extends BaseService<User, Long, RegistrationRequest, Us
                 .lastName(entity.getLastName())
                 .username(entity.getUsername())
                 .email(entity.getEmail())
+                .phoneNo(entity.getPhoneNo())
                 .build();
     }
 
