@@ -69,6 +69,7 @@ public class UserService extends BaseService<User, Long, RegistrationRequest, Us
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNo(request.getPhoneNo())
                 .roles(extractRoleEntities(request.getRoles()))
                 .build();
     }

@@ -12,5 +12,6 @@ public class RegistrationRequest {
     private String username;
     private String email;
     private String password;
+    private String phoneNo;
     private List<UserRole> roles;
 }
