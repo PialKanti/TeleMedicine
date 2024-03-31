@@ -1,5 +1,10 @@
 package com.codecraftershub.telemedicine.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum BloodGroup {
     A_POSITIVE("A+"),
     A_NEGATIVE("A-"),
@@ -11,8 +16,4 @@ public enum BloodGroup {
     AB_NEGATIVE("AB-");
 
     public final String displayValue;
-
-    BloodGroup(String displayValue) {
-        this.displayValue = displayValue;
-    }
 }

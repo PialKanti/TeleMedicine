@@ -1,8 +1,10 @@
 package com.codecraftershub.telemedicine.enums;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum UserPermission {
     DOCTOR_READ("Doctor-Read"),
     DOCTOR_CREATE("Doctor-Create"),
@@ -15,8 +17,4 @@ public enum UserPermission {
     PATIENT_DELETE("Patient-Delete");
 
     private final String displayValue;
-
-    UserPermission(String displayValue) {
-        this.displayValue = displayValue;
-    }
 }
