@@ -1,6 +1,7 @@
 package com.codecraftershub.telemedicine.advices;
 
 import com.codecraftershub.telemedicine.dtos.responses.errors.ErrorResponse;
+import com.codecraftershub.telemedicine.exceptions.InactiveUserException;
 import com.codecraftershub.telemedicine.exceptions.PasswordMismatchException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -30,5 +31,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {PasswordMismatchException.class})
     public ResponseEntity<ErrorResponse> handlePasswordMismatchException(PasswordMismatchException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponse.build(HttpStatus.UNAUTHORIZED, exception.getMessage()));
+    }
+
+    @ExceptionHandler(value = {InactiveUserException.class})
+    public ResponseEntity<ErrorResponse> handleInactiveUserException(InactiveUserException exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorResponse.build(HttpStatus.FORBIDDEN, exception.getMessage()));
     }
 }

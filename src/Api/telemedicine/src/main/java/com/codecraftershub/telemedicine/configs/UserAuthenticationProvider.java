@@ -2,6 +2,7 @@ package com.codecraftershub.telemedicine.configs;
 
 import com.codecraftershub.telemedicine.entities.user.Role;
 import com.codecraftershub.telemedicine.entities.user.User;
+import com.codecraftershub.telemedicine.exceptions.InactiveUserException;
 import com.codecraftershub.telemedicine.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,11 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         if (!passwordEncoder.matches(credentials, user.getPassword())) {
             log.error("Incorrect password for {}", username);
             throw new BadCredentialsException("Password does not match");
+        }
+
+        if(!user.isActive()){
+            log.error("{} is not active", username);
+            throw new InactiveUserException("User is not active");
         }
 
         log.info("{} has successfully logged in", username);
