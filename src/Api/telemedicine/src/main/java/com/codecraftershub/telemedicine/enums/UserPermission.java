@@ -6,6 +6,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum UserPermission {
+    ADMIN_READ("Admin-Read"),
+    ADMIN_CREATE("Admin-Create"),
+    ADMIN_UPDATE("Admin-Update"),
+    ADMIN_DELETE("Admin-Delete"),
+
     DOCTOR_READ("Doctor-Read"),
     DOCTOR_CREATE("Doctor-Create"),
     DOCTOR_UPDATE("Doctor-Update"),
