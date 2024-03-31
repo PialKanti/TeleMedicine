@@ -23,6 +23,8 @@ public class Doctor extends AuditableEntity {
     @Column(name = "nid", nullable = false)
     private String nidNumber;
     private double fee;
+    @Column(name = "approved")
+    private boolean isApproved;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

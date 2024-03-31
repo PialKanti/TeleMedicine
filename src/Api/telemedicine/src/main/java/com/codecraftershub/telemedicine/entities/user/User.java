@@ -31,6 +31,8 @@ public class User extends NonAuditableEntity implements UserDetails {
     private String password;
     @Column(nullable = false, unique = true)
     private String phoneNo;
+    @Column(name = "active")
+    private boolean isActive;
     @ManyToMany
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
