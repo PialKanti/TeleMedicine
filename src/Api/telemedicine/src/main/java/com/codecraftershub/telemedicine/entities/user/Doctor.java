@@ -18,8 +18,10 @@ public class Doctor extends AuditableEntity {
     private String title;
     @Column(nullable = false)
     private String speciality;
-    @Column(name = "registration_no",nullable = false)
+    @Column(name = "registration_no", nullable = false)
     private String registrationNumber;
+    @Column(name = "nid", nullable = false)
+    private String nidNumber;
     private double fee;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
