@@ -71,6 +71,7 @@ public class UserService extends BaseService<User, Long, RegistrationRequest, Us
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNo(request.getPhoneNo())
                 .roles(extractRoleEntities(request.getRoles()))
+                .isActive(true) // Since newly created users will be activated by default
                 .build();
     }
 
