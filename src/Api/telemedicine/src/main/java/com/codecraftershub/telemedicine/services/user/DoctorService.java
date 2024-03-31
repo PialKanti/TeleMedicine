@@ -8,16 +8,28 @@ import com.codecraftershub.telemedicine.entities.user.User;
 import com.codecraftershub.telemedicine.repositories.user.DoctorRepository;
 import com.codecraftershub.telemedicine.repositories.user.UserRepository;
 import com.codecraftershub.telemedicine.services.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 
 public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationRequest, DoctorUpdateRequest, UserResponse> {
+    private final DoctorRepository repository;
     private final UserRepository userRepository;
+
     public DoctorService(DoctorRepository repository, UserRepository userRepository) {
         super(repository);
+        this.repository = repository;
         this.userRepository = userRepository;
+    }
+
+    public Doctor update(Long id, Doctor entityToBeUpdated) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException();
+        }
+
+        return repository.save(entityToBeUpdated);
     }
 
     @Override
