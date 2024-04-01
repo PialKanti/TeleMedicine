@@ -11,6 +11,7 @@ import com.codecraftershub.telemedicine.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -21,6 +22,7 @@ public class DbValueInitializer implements ApplicationRunner {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private Map<String, List<Permission>> permissionMap;
     private Map<String, Role> roleMap;
 
@@ -72,7 +74,7 @@ public class DbValueInitializer implements ApplicationRunner {
                 .builder()
                 .firstName("Admin")
                 .username("admin")
-                .password("admin")
+                .password(passwordEncoder.encode("admin"))
                 .email("admin@gmail.com")
                 .phoneNo("123456789")
                 .isActive(true)

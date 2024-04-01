@@ -1,9 +1,11 @@
 package com.codecraftershub.telemedicine.configs;
 
+import com.codecraftershub.telemedicine.enums.UserRole;
 import com.codecraftershub.telemedicine.filters.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,6 +46,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers(WHITELIST_URLS)
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/doctors/{id}/approve").hasRole(UserRole.ADMIN.toString())
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
