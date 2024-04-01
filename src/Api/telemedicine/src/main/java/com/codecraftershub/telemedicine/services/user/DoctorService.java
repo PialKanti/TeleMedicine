@@ -1,5 +1,6 @@
 package com.codecraftershub.telemedicine.services.user;
 
+import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
 import com.codecraftershub.telemedicine.dtos.auth.DoctorRegistrationRequest;
 import com.codecraftershub.telemedicine.dtos.requests.users.DoctorUpdateRequest;
 import com.codecraftershub.telemedicine.dtos.responses.users.UserResponse;
@@ -9,6 +10,7 @@ import com.codecraftershub.telemedicine.repositories.user.DoctorRepository;
 import com.codecraftershub.telemedicine.repositories.user.UserRepository;
 import com.codecraftershub.telemedicine.services.BaseService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,18 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
         }
 
         return repository.save(entityToBeUpdated);
+    }
+
+    public <T> BasePaginatedResponse<T> findAllActiveAndApprovedDoctors(Pageable pageable, Class<T> type) {
+        var page = repository.findAllActiveAndApprovedDoctors(pageable, type);
+        return BasePaginatedResponse
+                .<T>builder()
+                .page(page.getNumber())
+                .pageSize(page.getSize())
+                .totalItems(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .data(page.getContent())
+                .build();
     }
 
     @Override
