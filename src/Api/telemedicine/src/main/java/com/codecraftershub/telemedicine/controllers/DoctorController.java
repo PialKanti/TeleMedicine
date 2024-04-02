@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class DoctorController {
     private final DoctorService service;
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<DoctorProjection> findById(@PathVariable Long id){
+        return ResponseEntity.ok(service.findById(id, DoctorProjection.class));
+    }
+
     @GetMapping
     public ResponseEntity<BasePaginatedResponse<DoctorProjection>> findAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                                            @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
