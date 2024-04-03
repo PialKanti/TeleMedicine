@@ -4,7 +4,7 @@ import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
 import com.codecraftershub.telemedicine.dtos.auth.DoctorRegistrationRequest;
 import com.codecraftershub.telemedicine.dtos.requests.users.DoctorUpdateRequest;
 import com.codecraftershub.telemedicine.dtos.responses.users.UserResponse;
-import com.codecraftershub.telemedicine.entities.user.Doctor;
+import com.codecraftershub.telemedicine.entities.user.doctor.Doctor;
 import com.codecraftershub.telemedicine.entities.user.User;
 import com.codecraftershub.telemedicine.repositories.user.DoctorRepository;
 import com.codecraftershub.telemedicine.repositories.user.UserRepository;

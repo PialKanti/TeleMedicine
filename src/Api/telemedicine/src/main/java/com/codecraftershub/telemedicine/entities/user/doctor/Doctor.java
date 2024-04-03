@@ -1,6 +1,7 @@
-package com.codecraftershub.telemedicine.entities.user;
+package com.codecraftershub.telemedicine.entities.user.doctor;
 
 import com.codecraftershub.telemedicine.entities.common.AuditableEntity;
+import com.codecraftershub.telemedicine.entities.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

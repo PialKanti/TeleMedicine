@@ -4,7 +4,7 @@ import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
 import com.codecraftershub.telemedicine.dtos.projections.doctors.DoctorProjection;
 import com.codecraftershub.telemedicine.dtos.responses.GenericResponse;
 import com.codecraftershub.telemedicine.dtos.responses.doctors.ApprovalResponse;
-import com.codecraftershub.telemedicine.entities.user.Doctor;
+import com.codecraftershub.telemedicine.entities.user.doctor.Doctor;
 import com.codecraftershub.telemedicine.services.user.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
