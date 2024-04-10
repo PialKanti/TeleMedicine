@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Entity
 @Table(name = "doctors")
 @SuperBuilder
@@ -29,4 +31,7 @@ public class Doctor extends AuditableEntity {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+    @OneToMany
+    @JoinTable(name = "doctor_experiences", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "experience_id"))
+    private List<Experience> experiences;
 }
