@@ -6,6 +6,7 @@ import com.codecraftershub.telemedicine.dtos.responses.GenericResponse;
 import com.codecraftershub.telemedicine.dtos.responses.doctors.ApprovalResponse;
 import com.codecraftershub.telemedicine.entities.user.Appointment;
 import com.codecraftershub.telemedicine.entities.user.doctor.Doctor;
+import com.codecraftershub.telemedicine.services.user.AppointmentService;
 import com.codecraftershub.telemedicine.services.user.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 @RequestMapping("/api/v1/doctors")
 public class DoctorController {
     private final DoctorService service;
+    private final AppointmentService appointmentService;
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<DoctorProjection> findById(@PathVariable Long id) {
@@ -54,6 +56,6 @@ public class DoctorController {
                                                                                   @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                                                   @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return ResponseEntity.ok(service.searchAppointments(id, fromDate, toDate, pageable, Appointment.class));
+        return ResponseEntity.ok(appointmentService.searchDoctorAppointments(id, fromDate, toDate, pageable, Appointment.class));
     }
 }

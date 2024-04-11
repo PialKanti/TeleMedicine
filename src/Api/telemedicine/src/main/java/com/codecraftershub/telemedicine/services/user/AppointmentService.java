@@ -8,10 +8,7 @@ import com.codecraftershub.telemedicine.entities.user.Patient;
 import com.codecraftershub.telemedicine.entities.user.doctor.Doctor;
 import com.codecraftershub.telemedicine.exceptions.AppointmentConflictException;
 import com.codecraftershub.telemedicine.repositories.user.AppointmentRepository;
-import com.codecraftershub.telemedicine.repositories.user.DoctorRepository;
-import com.codecraftershub.telemedicine.repositories.user.PatientRepository;
 import com.codecraftershub.telemedicine.services.BaseService;
-import jakarta.persistence.EntityExistsException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +17,14 @@ import java.time.LocalDate;
 @Service
 public class AppointmentService extends BaseService<Appointment, Long, AppointmentCreateRequest, AppointmentUpdateRequest, Appointment> {
     private final AppointmentRepository repository;
-    private final DoctorRepository doctorRepository;
-    private final PatientRepository patientRepository;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
 
-    public AppointmentService(AppointmentRepository repository, DoctorRepository doctorRepository, PatientRepository patientRepository) {
+    public AppointmentService(AppointmentRepository repository, DoctorService doctorService, PatientService patientService) {
         super(repository);
         this.repository = repository;
-        this.doctorRepository = doctorRepository;
-        this.patientRepository = patientRepository;
+        this.doctorService = doctorService;
+        this.patientService = patientService;
     }
 
     @Override
@@ -50,12 +47,25 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
                 .build();
     }
 
+    public <T> BasePaginatedResponse<T> searchDoctorAppointments(Long doctorId, LocalDate fromDate, LocalDate toDate, Pageable pageable, Class<T> type) {
+        var doctor = doctorService.findById(doctorId, Doctor.class);
+        var page = repository.findAllByDoctorAndAppointmentDateBetween(doctor, fromDate, toDate, pageable, type);
+        return BasePaginatedResponse
+                .<T>builder()
+                .page(page.getNumber())
+                .pageSize(page.getSize())
+                .totalItems(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .data(page.getContent())
+                .build();
+    }
+
     @Override
     protected Appointment convertToCreateEntity(AppointmentCreateRequest createRequest) {
         return Appointment
                 .builder()
-                .doctor(doctorRepository.findById(createRequest.getDoctorId(), Doctor.class).orElseThrow(EntityExistsException::new))
-                .patient(patientRepository.findById(createRequest.getPatientId(), Patient.class).orElseThrow(EntityExistsException::new))
+                .doctor(doctorService.findById(createRequest.getDoctorId(), Doctor.class))
+                .patient(patientService.findById(createRequest.getPatientId(), Patient.class))
                 .appointmentDate(createRequest.getAppointmentDate())
                 .appointmentTime(createRequest.getAppointmentTime())
                 .reason(createRequest.getReason())
