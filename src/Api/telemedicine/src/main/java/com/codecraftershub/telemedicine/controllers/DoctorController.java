@@ -4,6 +4,7 @@ import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
 import com.codecraftershub.telemedicine.dtos.projections.doctors.DoctorProjection;
 import com.codecraftershub.telemedicine.dtos.responses.GenericResponse;
 import com.codecraftershub.telemedicine.dtos.responses.doctors.ApprovalResponse;
+import com.codecraftershub.telemedicine.entities.user.Appointment;
 import com.codecraftershub.telemedicine.entities.user.doctor.Doctor;
 import com.codecraftershub.telemedicine.services.user.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/doctors")
@@ -20,7 +23,7 @@ public class DoctorController {
     private final DoctorService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DoctorProjection> findById(@PathVariable Long id){
+    public ResponseEntity<DoctorProjection> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id, DoctorProjection.class));
     }
 
@@ -42,5 +45,14 @@ public class DoctorController {
                 .message("Doctor with ID %s has been successfully approved".formatted(doctor.getId()))
                 .data(ApprovalResponse.builder().id(doctor.getId()).username(doctor.getUser().getUsername()).build())
                 .build());
+    }
+
+    @GetMapping(value = "/{id}/appointments")
+    public ResponseEntity<BasePaginatedResponse<Appointment>> findAllAppointments(@PathVariable(name = "id") Long id,
+                                                                                  @RequestParam(name = "appointmentDate", required = false) LocalDate appointmentDate,
+                                                                                  @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                                                                  @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(service.findAllAppointmentsByIdAndDate(id, appointmentDate, pageable, Appointment.class));
     }
 }

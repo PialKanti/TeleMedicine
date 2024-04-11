@@ -14,15 +14,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationRequest, DoctorUpdateRequest, UserResponse> {
     private final DoctorRepository repository;
     private final UserRepository userRepository;
+    private final AppointmentService appointmentService;
 
-    public DoctorService(DoctorRepository repository, UserRepository userRepository) {
+    public DoctorService(DoctorRepository repository, UserRepository userRepository, AppointmentService appointmentService) {
         super(repository);
         this.repository = repository;
         this.userRepository = userRepository;
+        this.appointmentService = appointmentService;
     }
 
     public Doctor update(Long id, Doctor entityToBeUpdated) {
@@ -31,6 +35,11 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
         }
 
         return repository.save(entityToBeUpdated);
+    }
+
+    public <T> BasePaginatedResponse<T> findAllAppointmentsByIdAndDate(Long id, LocalDate appointmentDate, Pageable pageable, Class<T> type){
+        var doctor = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return appointmentService.findAllByDoctorAndAppointmentDate(doctor, appointmentDate, pageable, type);
     }
 
     public <T> BasePaginatedResponse<T> findAllActiveAndApprovedDoctors(Pageable pageable, Class<T> type) {
