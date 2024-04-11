@@ -38,8 +38,8 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
         return super.create(createRequest);
     }
 
-    public <T> BasePaginatedResponse<T> findAllByDoctorAndAppointmentDate(Doctor doctor, LocalDate appointmentDate, Pageable pageable, Class<T> type) {
-        var page = repository.findAllByDoctorAndAppointmentDate(doctor, appointmentDate, pageable, type);
+    public <T> BasePaginatedResponse<T> findAllByDoctorAndAppointmentDateBetween(Doctor doctor, LocalDate fromDate, LocalDate toDate, Pageable pageable, Class<T> type) {
+        var page = repository.findAllByDoctorAndAppointmentDateBetween(doctor, fromDate, toDate, pageable, type);
         return BasePaginatedResponse
                 .<T>builder()
                 .page(page.getNumber())

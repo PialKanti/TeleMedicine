@@ -37,9 +37,9 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
         return repository.save(entityToBeUpdated);
     }
 
-    public <T> BasePaginatedResponse<T> findAllAppointmentsByIdAndDate(Long id, LocalDate appointmentDate, Pageable pageable, Class<T> type){
+    public <T> BasePaginatedResponse<T> searchAppointments(Long id, LocalDate fromDate, LocalDate toDate, Pageable pageable, Class<T> type) {
         var doctor = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return appointmentService.findAllByDoctorAndAppointmentDate(doctor, appointmentDate, pageable, type);
+        return appointmentService.findAllByDoctorAndAppointmentDateBetween(doctor, fromDate, toDate, pageable, type);
     }
 
     public <T> BasePaginatedResponse<T> findAllActiveAndApprovedDoctors(Pageable pageable, Class<T> type) {

@@ -49,10 +49,11 @@ public class DoctorController {
 
     @GetMapping(value = "/{id}/appointments")
     public ResponseEntity<BasePaginatedResponse<Appointment>> findAllAppointments(@PathVariable(name = "id") Long id,
-                                                                                  @RequestParam(name = "appointmentDate", required = false) LocalDate appointmentDate,
+                                                                                  @RequestParam(name = "fromDate", required = false) LocalDate fromDate,
+                                                                                  @RequestParam(name = "toDate", required = false) LocalDate toDate,
                                                                                   @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                                                   @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return ResponseEntity.ok(service.findAllAppointmentsByIdAndDate(id, appointmentDate, pageable, Appointment.class));
+        return ResponseEntity.ok(service.searchAppointments(id, fromDate, toDate, pageable, Appointment.class));
     }
 }

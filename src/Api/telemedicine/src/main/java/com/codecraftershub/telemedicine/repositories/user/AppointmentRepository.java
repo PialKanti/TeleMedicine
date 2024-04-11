@@ -13,5 +13,5 @@ import java.time.LocalTime;
 @Repository
 public interface AppointmentRepository extends BaseRepository<Appointment, Long> {
     boolean existsByAppointmentDateAndAppointmentTime(LocalDate appointmentDate, LocalTime appointmentTime);
-    <T> Page<T> findAllByDoctorAndAppointmentDate(Doctor doctor, LocalDate appointmentDate, Pageable page, Class<T> type);
+    <T> Page<T> findAllByDoctorAndAppointmentDateBetween(Doctor doctor, LocalDate fromDate, LocalDate toDate, Pageable page, Class<T> type);
 }
