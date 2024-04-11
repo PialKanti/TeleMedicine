@@ -25,7 +25,7 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
 
     @Override
     public Appointment create(AppointmentCreateRequest createRequest) {
-        if(repository.existsByAppointmentTime(createRequest.getAppointmentTime())) {
+        if (repository.existsByAppointmentDateAndAppointmentTime(createRequest.getAppointmentDate(), createRequest.getAppointmentTime())) {
             throw new AppointmentConflictException("Doctor already has an appointment scheduled at that time");
         }
         return super.create(createRequest);
@@ -37,6 +37,7 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
                 .builder()
                 .doctor(doctorService.findById(createRequest.getDoctorId(), Doctor.class))
                 .patient(patientService.findById(createRequest.getPatientId(), Patient.class))
+                .appointmentDate(createRequest.getAppointmentDate())
                 .appointmentTime(createRequest.getAppointmentTime())
                 .reason(createRequest.getReason())
                 .build();
