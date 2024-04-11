@@ -1,6 +1,7 @@
 package com.codecraftershub.telemedicine.advices;
 
 import com.codecraftershub.telemedicine.dtos.responses.errors.ErrorResponse;
+import com.codecraftershub.telemedicine.exceptions.AppointmentConflictException;
 import com.codecraftershub.telemedicine.exceptions.InactiveUserException;
 import com.codecraftershub.telemedicine.exceptions.PasswordMismatchException;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,5 +37,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {InactiveUserException.class})
     public ResponseEntity<ErrorResponse> handleInactiveUserException(InactiveUserException exception) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorResponse.build(HttpStatus.FORBIDDEN, exception.getMessage()));
+    }
+
+    @ExceptionHandler(value = {AppointmentConflictException.class})
+    public ResponseEntity<ErrorResponse> handleAppointmentConflictException(AppointmentConflictException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse.build(HttpStatus.CONFLICT, exception.getMessage()));
     }
 }
