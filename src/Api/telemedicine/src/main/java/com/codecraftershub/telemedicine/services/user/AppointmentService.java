@@ -35,9 +35,26 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
         return super.create(createRequest);
     }
 
-    public <T> BasePaginatedResponse<T> searchDoctorAppointments(Long doctorId, LocalDateTime fromDate, LocalDateTime toDate, Pageable pageable, Class<T> type) {
+    public <T> BasePaginatedResponse<T> getDoctorUpcomingAppointments(Long doctorId, Pageable pageable, Class<T> type) {
         var doctor = doctorService.findById(doctorId, Doctor.class);
-        var page = repository.findAllByDoctorAndAppointmentTimeBetween(doctor, fromDate, toDate, pageable, type);
+
+        var page = repository.findAllByDoctorAndAppointmentTimeAfter(doctor, LocalDateTime.now(), pageable, type);
+
+        return BasePaginatedResponse
+                .<T>builder()
+                .page(page.getNumber())
+                .pageSize(page.getSize())
+                .totalItems(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .data(page.getContent())
+                .build();
+    }
+
+    public <T> BasePaginatedResponse<T> getDoctorAppointmentHistories(Long doctorId, Pageable pageable, Class<T> type) {
+        var doctor = doctorService.findById(doctorId, Doctor.class);
+
+        var page = repository.findAllByDoctorAndAppointmentTimeLessThanEqual(doctor, LocalDateTime.now(), pageable, type);
+
         return BasePaginatedResponse
                 .<T>builder()
                 .page(page.getNumber())

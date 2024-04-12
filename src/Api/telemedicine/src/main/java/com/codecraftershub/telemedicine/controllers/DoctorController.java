@@ -15,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/doctors")
@@ -49,13 +47,19 @@ public class DoctorController {
                 .build());
     }
 
-    @GetMapping(value = "/{id}/appointments")
-    public ResponseEntity<BasePaginatedResponse<Appointment>> findAllAppointments(@PathVariable(name = "id") Long id,
-                                                                                  @RequestParam(name = "fromDate", required = false) LocalDateTime fromDate,
-                                                                                  @RequestParam(name = "toDate", required = false) LocalDateTime toDate,
-                                                                                  @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-                                                                                  @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
+    @GetMapping(value = "/{id}/appointments/upcoming")
+    public ResponseEntity<BasePaginatedResponse<Appointment>> findAllUpcomingAppointments(@PathVariable(name = "id") Long id,
+                                                                                          @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                                                                          @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return ResponseEntity.ok(appointmentService.searchDoctorAppointments(id, fromDate, toDate, pageable, Appointment.class));
+        return ResponseEntity.ok(appointmentService.getDoctorUpcomingAppointments(id, pageable, Appointment.class));
+    }
+
+    @GetMapping(value = "/{id}/appointments/histories")
+    public ResponseEntity<BasePaginatedResponse<Appointment>> findAllAppointmentHistories(@PathVariable(name = "id") Long id,
+                                                                                          @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                                                                          @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(appointmentService.getDoctorAppointmentHistories(id, pageable, Appointment.class));
     }
 }
