@@ -12,7 +12,7 @@ import com.codecraftershub.telemedicine.services.BaseService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class AppointmentService extends BaseService<Appointment, Long, AppointmentCreateRequest, AppointmentUpdateRequest, Appointment> {
@@ -29,27 +29,15 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
 
     @Override
     public Appointment create(AppointmentCreateRequest createRequest) {
-        if (repository.existsByAppointmentDateAndAppointmentTime(createRequest.getAppointmentDate(), createRequest.getAppointmentTime())) {
+        if (repository.existsByAppointmentTime(createRequest.getAppointmentTime())) {
             throw new AppointmentConflictException("Doctor already has an appointment scheduled at that time");
         }
         return super.create(createRequest);
     }
 
-    public <T> BasePaginatedResponse<T> findAllByDoctorAndAppointmentDateBetween(Doctor doctor, LocalDate fromDate, LocalDate toDate, Pageable pageable, Class<T> type) {
-        var page = repository.findAllByDoctorAndAppointmentDateBetween(doctor, fromDate, toDate, pageable, type);
-        return BasePaginatedResponse
-                .<T>builder()
-                .page(page.getNumber())
-                .pageSize(page.getSize())
-                .totalItems(page.getTotalElements())
-                .totalPages(page.getTotalPages())
-                .data(page.getContent())
-                .build();
-    }
-
-    public <T> BasePaginatedResponse<T> searchDoctorAppointments(Long doctorId, LocalDate fromDate, LocalDate toDate, Pageable pageable, Class<T> type) {
+    public <T> BasePaginatedResponse<T> searchDoctorAppointments(Long doctorId, LocalDateTime fromDate, LocalDateTime toDate, Pageable pageable, Class<T> type) {
         var doctor = doctorService.findById(doctorId, Doctor.class);
-        var page = repository.findAllByDoctorAndAppointmentDateBetween(doctor, fromDate, toDate, pageable, type);
+        var page = repository.findAllByDoctorAndAppointmentTimeBetween(doctor, fromDate, toDate, pageable, type);
         return BasePaginatedResponse
                 .<T>builder()
                 .page(page.getNumber())
@@ -66,7 +54,7 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
                 .builder()
                 .doctor(doctorService.findById(createRequest.getDoctorId(), Doctor.class))
                 .patient(patientService.findById(createRequest.getPatientId(), Patient.class))
-                .appointmentDate(createRequest.getAppointmentDate())
+                .appointmentTime(createRequest.getAppointmentTime())
                 .appointmentTime(createRequest.getAppointmentTime())
                 .reason(createRequest.getReason())
                 .build();

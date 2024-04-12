@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,8 +51,8 @@ public class DoctorController {
 
     @GetMapping(value = "/{id}/appointments")
     public ResponseEntity<BasePaginatedResponse<Appointment>> findAllAppointments(@PathVariable(name = "id") Long id,
-                                                                                  @RequestParam(name = "fromDate", required = false) LocalDate fromDate,
-                                                                                  @RequestParam(name = "toDate", required = false) LocalDate toDate,
+                                                                                  @RequestParam(name = "fromDate", required = false) LocalDateTime fromDate,
+                                                                                  @RequestParam(name = "toDate", required = false) LocalDateTime toDate,
                                                                                   @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                                                   @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);

@@ -3,15 +3,13 @@ package com.codecraftershub.telemedicine.dtos.requests.users;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class AppointmentCreateRequest {
     private Long doctorId;
     private Long patientId;
-    private LocalDate appointmentDate;
-    private LocalTime appointmentTime;
+    private LocalDateTime appointmentTime;
     private String reason;
 }
