@@ -22,14 +22,7 @@ public class SpecialityService extends BaseService<Speciality, Long, SpecialityC
     public <T> BasePaginatedResponse<T> findAll(Pageable pageable, Class<T> type) {
         var page = repository.findAllActive(pageable, type);
 
-        return BasePaginatedResponse
-                .<T>builder()
-                .page(page.getNumber())
-                .pageSize(page.getSize())
-                .totalItems(page.getTotalElements())
-                .totalPages(page.getTotalPages())
-                .data(page.getContent())
-                .build();
+        return super.convertPageToResponse(page);
     }
 
     @Override

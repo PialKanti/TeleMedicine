@@ -3,6 +3,7 @@ package com.codecraftershub.telemedicine.services;
 import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
 import com.codecraftershub.telemedicine.repositories.BaseRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -19,7 +20,16 @@ public abstract class BaseService<T, Id, CreateRequest, UpdateRequest, EntityRes
     }
 
     public <R> BasePaginatedResponse<R> findAll(Pageable pageable, Class<R> type) {
-        var page = repository.findAllBy(pageable, type);
+        var page = getPage(pageable, type);
+
+        return convertPageToResponse(page);
+    }
+
+    private <R> Page<R> getPage(Pageable pageable, Class<R> type) {
+        return repository.findAllBy(pageable, type);
+    }
+
+    protected <R> BasePaginatedResponse<R> convertPageToResponse(Page<R> page) {
         return BasePaginatedResponse
                 .<R>builder()
                 .page(page.getNumber())

@@ -40,14 +40,7 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
 
         var page = repository.findAllByDoctorAndAppointmentTimeAfter(doctor, LocalDateTime.now(), pageable, type);
 
-        return BasePaginatedResponse
-                .<T>builder()
-                .page(page.getNumber())
-                .pageSize(page.getSize())
-                .totalItems(page.getTotalElements())
-                .totalPages(page.getTotalPages())
-                .data(page.getContent())
-                .build();
+        return super.convertPageToResponse(page);
     }
 
     public <T> BasePaginatedResponse<T> getDoctorAppointmentHistories(Long doctorId, Pageable pageable, Class<T> type) {
@@ -55,14 +48,7 @@ public class AppointmentService extends BaseService<Appointment, Long, Appointme
 
         var page = repository.findAllByDoctorAndAppointmentTimeLessThanEqual(doctor, LocalDateTime.now(), pageable, type);
 
-        return BasePaginatedResponse
-                .<T>builder()
-                .page(page.getNumber())
-                .pageSize(page.getSize())
-                .totalItems(page.getTotalElements())
-                .totalPages(page.getTotalPages())
-                .data(page.getContent())
-                .build();
+        return super.convertPageToResponse(page);
     }
 
     @Override

@@ -40,14 +40,8 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
 
     public <T> BasePaginatedResponse<T> findAllActiveAndApprovedDoctors(Pageable pageable, Class<T> type) {
         var page = repository.findAllActiveAndApprovedDoctors(pageable, type);
-        return BasePaginatedResponse
-                .<T>builder()
-                .page(page.getNumber())
-                .pageSize(page.getSize())
-                .totalItems(page.getTotalElements())
-                .totalPages(page.getTotalPages())
-                .data(page.getContent())
-                .build();
+
+        return super.convertPageToResponse(page);
     }
 
     @Override
