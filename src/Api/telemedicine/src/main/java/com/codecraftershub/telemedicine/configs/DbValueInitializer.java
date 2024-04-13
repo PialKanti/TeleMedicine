@@ -3,10 +3,12 @@ package com.codecraftershub.telemedicine.configs;
 import com.codecraftershub.telemedicine.entities.user.Permission;
 import com.codecraftershub.telemedicine.entities.user.Role;
 import com.codecraftershub.telemedicine.entities.user.User;
+import com.codecraftershub.telemedicine.entities.user.doctor.Speciality;
 import com.codecraftershub.telemedicine.enums.UserPermission;
 import com.codecraftershub.telemedicine.enums.UserRole;
 import com.codecraftershub.telemedicine.repositories.user.PermissionRepository;
 import com.codecraftershub.telemedicine.repositories.user.RoleRepository;
+import com.codecraftershub.telemedicine.repositories.user.SpecialityRepository;
 import com.codecraftershub.telemedicine.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -22,6 +24,7 @@ public class DbValueInitializer implements ApplicationRunner {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
     private final UserRepository userRepository;
+    private final SpecialityRepository specialityRepository;
     private final PasswordEncoder passwordEncoder;
     private Map<String, List<Permission>> permissionMap;
     private Map<String, Role> roleMap;
@@ -33,6 +36,7 @@ public class DbValueInitializer implements ApplicationRunner {
         insertPermissionToDB();
         insertUserRolesToDB();
         createAdminUser();
+        createSpecialities();
     }
 
     private void insertPermissionToDB() {
@@ -82,5 +86,11 @@ public class DbValueInitializer implements ApplicationRunner {
                 .build();
 
         userRepository.save(user);
+    }
+
+    private void createSpecialities() {
+        List<Speciality> specialities = Arrays.asList(Speciality.builder().name("General Physician").isActive(true).build(),
+                Speciality.builder().name("Gynae & Obs").isActive(true).build());
+        specialityRepository.saveAll(specialities);
     }
 }
