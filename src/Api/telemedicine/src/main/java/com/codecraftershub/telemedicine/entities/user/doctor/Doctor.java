@@ -20,7 +20,9 @@ public class Doctor extends AuditableEntity {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private String speciality;
+    @ManyToMany
+    @JoinTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
+    private List<Speciality> speciality;
     @Column(name = "registration_no", nullable = false)
     private String registrationNumber;
     @Column(name = "nid", nullable = false)

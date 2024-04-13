@@ -6,6 +6,7 @@ import com.codecraftershub.telemedicine.dtos.requests.users.DoctorUpdateRequest;
 import com.codecraftershub.telemedicine.dtos.responses.users.UserResponse;
 import com.codecraftershub.telemedicine.entities.user.doctor.Doctor;
 import com.codecraftershub.telemedicine.entities.user.User;
+import com.codecraftershub.telemedicine.entities.user.doctor.Speciality;
 import com.codecraftershub.telemedicine.repositories.user.DoctorRepository;
 import com.codecraftershub.telemedicine.repositories.user.UserRepository;
 import com.codecraftershub.telemedicine.services.BaseService;
@@ -14,15 +15,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationRequest, DoctorUpdateRequest, UserResponse> {
     private final DoctorRepository repository;
     private final UserRepository userRepository;
+    private final SpecialityService specialityService;
 
-    public DoctorService(DoctorRepository repository, UserRepository userRepository) {
+    public DoctorService(DoctorRepository repository, UserRepository userRepository, SpecialityService specialityService) {
         super(repository);
         this.repository = repository;
         this.userRepository = userRepository;
+        this.specialityService = specialityService;
     }
 
     public Doctor update(Long id, Doctor entityToBeUpdated) {
@@ -52,7 +57,7 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
         return Doctor
                 .builder()
                 .title(request.getTitle().toString())
-                .speciality(request.getSpeciality().toString())
+                .speciality(Collections.singletonList(specialityService.findById(request.getSpecialityId(), Speciality.class)))
                 .registrationNumber(request.getRegistrationNumber())
                 .nidNumber(request.getNidNumber())
                 .fee(request.getFee())
