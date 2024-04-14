@@ -1,7 +1,6 @@
 package com.codecraftershub.telemedicine.controllers;
 
 import com.codecraftershub.telemedicine.dtos.responses.lookups.LookupData;
-import com.codecraftershub.telemedicine.dtos.responses.lookups.LookupResponse;
 import com.codecraftershub.telemedicine.services.LookupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +17,12 @@ public class LookupController {
     private final LookupService service;
 
     @GetMapping(value = "/bloodgroup")
-    public ResponseEntity<LookupResponse> getBloodGroups() {
+    public ResponseEntity<List<LookupData>> getBloodGroups() {
         return ResponseEntity.ok(service.getBloodGroups());
     }
 
     @GetMapping(value = "/gender")
-    public ResponseEntity<LookupResponse> getGenders() {
+    public ResponseEntity<List<LookupData>> getGenders() {
         return ResponseEntity.ok(service.getGenders());
     }
 
