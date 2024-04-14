@@ -1,6 +1,7 @@
 package com.codecraftershub.telemedicine.dtos.auth;
 
 import com.codecraftershub.telemedicine.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public class RegistrationRequest {
     private String email;
     private String password;
     private String phoneNo;
+    @JsonIgnore
     private List<UserRole> roles;
 }

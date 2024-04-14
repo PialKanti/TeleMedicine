@@ -6,6 +6,7 @@ import com.codecraftershub.telemedicine.dtos.auth.PatientRegistrationRequest;
 import com.codecraftershub.telemedicine.dtos.responses.auth.LoginResponse;
 import com.codecraftershub.telemedicine.dtos.responses.users.UserResponse;
 import com.codecraftershub.telemedicine.entities.user.User;
+import com.codecraftershub.telemedicine.enums.UserRole;
 import com.codecraftershub.telemedicine.services.user.DoctorService;
 import com.codecraftershub.telemedicine.services.user.PatientService;
 import com.codecraftershub.telemedicine.services.user.UserService;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -23,14 +26,18 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public UserResponse registerAsPatient(PatientRegistrationRequest request){
+    public UserResponse registerAsPatient(PatientRegistrationRequest request) {
+        request.setRoles(Collections.singletonList(UserRole.PATIENT));
+
         UserResponse response = userService.create(request);
         patientService.create(request);
 
         return response;
     }
 
-    public UserResponse registerAsDoctor(DoctorRegistrationRequest request){
+    public UserResponse registerAsDoctor(DoctorRegistrationRequest request) {
+        request.setRoles(Collections.singletonList(UserRole.DOCTOR));
+
         UserResponse response = userService.create(request);
         doctorService.create(request);
         return response;
