@@ -1,6 +1,6 @@
 'use client';
 import { classNames } from 'primereact/utils';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { LayoutContext } from '../../../../layout/context/layoutcontext';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
@@ -8,6 +8,7 @@ import { Button } from 'primereact/button';
 import { useRouter } from 'next/navigation';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
+import { getBloodGroups, getGenders } from '../../../services/lookup';
 
 const RegisterPage = () => {
     const { layoutConfig } = useContext(LayoutContext);
@@ -15,15 +16,20 @@ const RegisterPage = () => {
     const router = useRouter();
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
-    const genderLookups = [
-        { name: 'Male', code: 'MALE' },
-        { name: 'Female', code: 'FEMALE' }
-    ];
+    const [bloodGroups, setBloodGroups] = useState([]);
+    const [genders, setGenders] = useState([]);
 
-    const bloodGroupLookups = [
-        { name: 'O+', code: 'O_POSITIVE' },
-        { name: 'O-', code: 'O_NEGATIVE' }
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            const bloodGroupResult = await getBloodGroups();
+            const genderResult = await getGenders();
+
+            setBloodGroups(bloodGroupResult.data);
+            setGenders(genderResult.data);
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div className={containerClassName}>
@@ -53,7 +59,7 @@ const RegisterPage = () => {
                             <div className="grid">
                                 <div className="col">
                                     <div className="field">
-                                    <label htmlFor="firstName" className="block font-medium mb-2">
+                                        <label htmlFor="firstName" className="block font-medium mb-2">
                                             First Name
                                         </label>
                                         <InputText id="firstName" type="text" className="w-full md:w-30rem mb-3" />
@@ -102,7 +108,7 @@ const RegisterPage = () => {
                                         </label>
                                         <Dropdown id="gender"
                                                   className="w-full md:w-30rem mb-3"
-                                                  options={genderLookups}
+                                                  options={genders}
                                                   optionLabel="name"
                                                   optionValue="code"
                                                   placeholder="Select" />
@@ -126,7 +132,8 @@ const RegisterPage = () => {
                                         <label htmlFor="bloodGroup" className="block font-medium mb-2">
                                             Blood Group
                                         </label>
-                                        <Dropdown id="bloodGroup" options={bloodGroupLookups}
+                                        <Dropdown id="bloodGroup"
+                                                  options={bloodGroups}
                                                   optionLabel="name"
                                                   optionValue="code"
                                                   placeholder="Select"
