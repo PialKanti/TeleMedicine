@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { getBloodGroups, getGenders } from '../../../services/lookup';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { registerAsPatient } from '../../../services/auth';
 
 const RegisterPage = () => {
     const { layoutConfig } = useContext(LayoutContext);
@@ -18,6 +20,17 @@ const RegisterPage = () => {
 
     const [bloodGroups, setBloodGroups] = useState([]);
     const [genders, setGenders] = useState([]);
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNo, setPhoneNo] = useState('');
+    const [username, setUsername] = useState('');
+    const [gender, setGender] = useState('');
+    const [birthDate, setBirthDate] = useState(null);
+    const [bloodGroup, setBloodGroup] = useState('');
+    const [password, setPassword] = useState('');
+    const [address, setAddress] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,6 +43,28 @@ const RegisterPage = () => {
 
         fetchData();
     }, []);
+
+    const submitForm = async () => {
+        const formData = getFormData();
+        console.log('Form data: ', formData);
+        const result = await registerAsPatient(formData);
+        console.log('Result : ', result);
+    };
+
+    const getFormData = () => {
+        return {
+            firstName: firstName,
+            lastName: lastName,
+            username: username,
+            email: email,
+            password: password,
+            phoneNo: phoneNo,
+            dateOfBirth: birthDate,
+            bloodGroup: bloodGroup,
+            gender: gender,
+            address: address
+        };
+    };
 
     return (
         <div className={containerClassName}>
@@ -62,7 +97,11 @@ const RegisterPage = () => {
                                         <label htmlFor="firstName" className="block font-medium mb-2">
                                             First Name
                                         </label>
-                                        <InputText id="firstName" type="text" className="w-full md:w-30rem mb-3" />
+                                        <InputText id="firstName"
+                                                   type="text"
+                                                   value={firstName}
+                                                   onChange={(e) => setFirstName(e.target.value)}
+                                                   className="w-full md:w-30rem mb-3" />
                                     </div>
                                 </div>
                                 <div className="col">
@@ -70,7 +109,11 @@ const RegisterPage = () => {
                                         <label htmlFor="lastName" className="block font-medium mb-2">
                                             Last Name
                                         </label>
-                                        <InputText id="lastName" type="text" className="w-full md:w-30rem mb-3" />
+                                        <InputText id="lastName"
+                                                   type="text"
+                                                   value={lastName}
+                                                   onChange={(e) => setLastName(e.target.value)}
+                                                   className="w-full md:w-30rem mb-3" />
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +123,11 @@ const RegisterPage = () => {
                                         <label htmlFor="email" className="block font-medium mb-2">
                                             Email
                                         </label>
-                                        <InputText id="email" type="text" className="w-full md:w-30rem mb-3" />
+                                        <InputText id="email"
+                                                   type="text"
+                                                   value={email}
+                                                   onChange={(e) => setEmail(e.target.value)}
+                                                   className="w-full md:w-30rem mb-3" />
                                     </div>
                                 </div>
                                 <div className="col">
@@ -88,7 +135,11 @@ const RegisterPage = () => {
                                         <label htmlFor="phoneNo" className="block font-medium mb-2">
                                             Phone Number
                                         </label>
-                                        <InputText id="phoneNo" type="text" className="w-full md:w-30rem mb-3" />
+                                        <InputText id="phoneNo"
+                                                   type="text"
+                                                   value={phoneNo}
+                                                   onChange={(e) => setPhoneNo(e.target.value)}
+                                                   className="w-full md:w-30rem mb-3" />
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +149,11 @@ const RegisterPage = () => {
                                         <label htmlFor="username" className="block font-medium mb-2">
                                             Username
                                         </label>
-                                        <InputText id="username" type="text" className="w-full md:w-30rem mb-3" />
+                                        <InputText id="username"
+                                                   type="text"
+                                                   value={username}
+                                                   onChange={(e) => setUsername(e.target.value)}
+                                                   className="w-full md:w-30rem mb-3" />
                                     </div>
                                 </div>
                                 <div className="col">
@@ -108,6 +163,8 @@ const RegisterPage = () => {
                                         </label>
                                         <Dropdown id="gender"
                                                   className="w-full md:w-30rem mb-3"
+                                                  value={gender}
+                                                  onChange={(e) => setGender(e.target.value)}
                                                   options={genders}
                                                   optionLabel="name"
                                                   optionValue="code"
@@ -122,6 +179,8 @@ const RegisterPage = () => {
                                             Birth Date
                                         </label>
                                         <Calendar id="dateOfBirth"
+                                                  value={birthDate}
+                                                  onChange={(e) => setBirthDate(e.target.value)}
                                                   showIcon
                                                   showButtonBar
                                                   className="w-full md:w-30rem mb-3" />
@@ -133,6 +192,8 @@ const RegisterPage = () => {
                                             Blood Group
                                         </label>
                                         <Dropdown id="bloodGroup"
+                                                  value={bloodGroup}
+                                                  onChange={(e) => setBloodGroup(e.target.value)}
                                                   options={bloodGroups}
                                                   optionLabel="name"
                                                   optionValue="code"
@@ -147,7 +208,12 @@ const RegisterPage = () => {
                                         <label htmlFor="password" className="block font-medium mb-2">
                                             Password
                                         </label>
-                                        <Password id="password" toggleMask className="w-full mb-3"
+                                        <Password id="password"
+                                                  value={password}
+                                                  onChange={(e) => setPassword(e.target.value)}
+                                                  toggleMask
+                                                  feedback={false}
+                                                  className="w-full mb-3"
                                                   inputClassName="w-full md:w-30rem" />
                                     </div>
                                 </div>
@@ -156,14 +222,28 @@ const RegisterPage = () => {
                                         <label htmlFor="confirmPassword" className="block font-medium mb-2">
                                             Confirm Password
                                         </label>
-                                        <Password id="confirmPassword" toggleMask className="w-full mb-3"
+                                        <Password id="confirmPassword"
+                                                  toggleMask
+                                                  feedback={false}
+                                                  className="w-full mb-3"
                                                   inputClassName="w-full md:w-30rem" />
                                     </div>
                                 </div>
                             </div>
+                            <div>
+                                <label htmlFor="address" className="block font-medium mb-2">
+                                    Address
+                                </label>
+                                <InputTextarea id="address"
+                                               rows={2}
+                                               value={address}
+                                               onChange={(e) => setAddress(e.target.value)}
+                                               className="w-full mb-3" />
+                            </div>
 
-                            <Button label="Register" className="p-3 text-xl"
-                                    onClick={() => router.push('/')}></Button>
+                            <Button label="Register"
+                                    className="p-3 text-xl"
+                                    onClick={submitForm} />
                         </div>
                     </div>
                 </div>
