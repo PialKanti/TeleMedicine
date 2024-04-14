@@ -3,6 +3,7 @@ package com.codecraftershub.telemedicine.services;
 import com.codecraftershub.telemedicine.dtos.responses.lookups.LookupData;
 import com.codecraftershub.telemedicine.enums.BloodGroup;
 import com.codecraftershub.telemedicine.enums.Gender;
+import com.codecraftershub.telemedicine.enums.doctors.Title;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,5 +29,15 @@ public class LookupService {
         }
 
         return genders;
+    }
+
+    public List<LookupData> getTitles() {
+        List<LookupData> titles = new ArrayList<>();
+
+        for (Title title : Title.values()) {
+            titles.add(LookupData.builder().name(title.getDisplayValue()).code(title.toString()).build());
+        }
+
+        return titles;
     }
 }

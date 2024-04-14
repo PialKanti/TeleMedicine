@@ -26,4 +26,8 @@ public class LookupController {
         return ResponseEntity.ok(service.getGenders());
     }
 
+    @GetMapping(value = "/title")
+    public ResponseEntity<List<LookupData>> getTitles() {
+        return ResponseEntity.ok(service.getTitles());
+    }
 }
