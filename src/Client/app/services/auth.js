@@ -10,4 +10,13 @@ const registerAsPatient = async (formData) => {
     }
 };
 
-export { registerAsPatient };
+const registerAsDoctor = async (formData) => {
+    try {
+        return await axiosInstance.post(endpoints.auth.register.doctor, formData);
+    } catch (error) {
+        console.error('Error registering as doctor: ', error);
+        throw error;
+    }
+};
+
+export { registerAsPatient, registerAsDoctor };

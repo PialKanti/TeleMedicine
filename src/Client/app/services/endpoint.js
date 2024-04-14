@@ -8,7 +8,9 @@ const endpoints = {
     },
     lookup: {
         gender: '/lookups/gender',
-        bloodGroup: '/lookups/bloodgroup'
+        bloodGroup: '/lookups/bloodgroup',
+        title: '/lookups/title',
+        speciality: '/specialities?page=0&pageSize=100'
     }
 };
 

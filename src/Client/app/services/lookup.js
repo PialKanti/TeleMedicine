@@ -19,4 +19,22 @@ const getGenders = async () => {
     }
 };
 
-export { getBloodGroups, getGenders };
+const getTitles = async () => {
+    try {
+        return await axiosInstance.get(endpoints.lookup.title);
+    } catch (error) {
+        console.error('Error fetching titles: ', error);
+        throw error;
+    }
+};
+
+const getSpecialities = async () => {
+    try {
+        return await axiosInstance.get(endpoints.lookup.speciality);
+    }catch (error){
+        console.error('Error fetching specialities: ', error);
+        throw error;
+    }
+}
+
+export { getBloodGroups, getGenders, getTitles, getSpecialities };
