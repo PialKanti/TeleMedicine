@@ -68,9 +68,7 @@ const RegisterPage = () => {
 
     return (
         <div className={containerClassName}>
-            <div className="flex flex-column align-items-center justify-content-center">
-                <img src={`/layout/images/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`}
-                     alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" />
+            <div className="flex flex-column align-items-center justify-content-center mt-5">
                 <div
                     style={{
                         borderRadius: '56px',
@@ -78,9 +76,9 @@ const RegisterPage = () => {
                         background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)'
                     }}
                 >
-                    <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
-                        <div className="text-center mb-7">
-                            <div className="text-900 text-3xl font-medium mb-3">Create new account</div>
+                    <div className="w-full surface-card py-5 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
+                        <div className="text-center mb-6">
+                            <div className="text-900 text-3xl font-medium mb-2">Create new account</div>
                             <div>
                                 <span className="text-gray-500 font-medium">Have an account?</span>
                                 <a className="font-medium no-underline ml-1 text-right cursor-pointer"
@@ -242,8 +240,16 @@ const RegisterPage = () => {
                             </div>
 
                             <Button label="Register"
-                                    className="p-3 text-xl"
+                                    className="p-3"
                                     onClick={submitForm} />
+                            <div className="mt-5 text-center">
+                                <span className="text-gray-500 font-medium">Are you a doctor?</span>
+                                <a className="font-medium no-underline ml-1 text-right cursor-pointer"
+                                   style={{ color: 'var(--primary-color)' }}
+                                   onClick={() => router.push('/auth/register/doctor')}>
+                                    Register as a doctor
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

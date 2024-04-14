@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
-import { useRouter } from 'next/navigation';
 import { Dropdown } from 'primereact/dropdown';
 import { getGenders, getSpecialities, getTitles } from '../../../../services/lookup';
 import { LayoutContext } from '../../../../../layout/context/layoutcontext';
@@ -13,7 +12,6 @@ import { registerAsDoctor } from '../../../../services/auth';
 const RegisterDoctorPage = () => {
     const { layoutConfig } = useContext(LayoutContext);
 
-    const router = useRouter();
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
     const [titles, setTitles] = useState([]);
@@ -72,8 +70,6 @@ const RegisterDoctorPage = () => {
     return (
         <div className={containerClassName}>
             <div className="flex flex-column align-items-center justify-content-center">
-                <img src={`/layout/images/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`}
-                     alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" />
                 <div
                     style={{
                         borderRadius: '56px',
@@ -81,9 +77,9 @@ const RegisterDoctorPage = () => {
                         background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)'
                     }}
                 >
-                    <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
-                        <div className="text-center mb-7">
-                            <div className="text-900 text-3xl font-medium mb-3">Doctor Registration</div>
+                    <div className="w-full surface-card py-5 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
+                        <div className="text-center mb-6">
+                            <div className="text-900 text-3xl font-medium mb-2">Doctor Registration</div>
                             <div>
                                 <span className="text-gray-500 font-medium">Have an account?</span>
                                 <a className="font-medium no-underline ml-1 text-right cursor-pointer"
@@ -263,7 +259,7 @@ const RegisterDoctorPage = () => {
                             </div>
 
                             <Button label="Register"
-                                    className="p-3 text-xl"
+                                    className="p-3"
                                     onClick={submitForm} />
                         </div>
                     </div>
