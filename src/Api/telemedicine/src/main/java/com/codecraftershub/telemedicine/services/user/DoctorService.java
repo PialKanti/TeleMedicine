@@ -52,9 +52,9 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
                 .builder()
                 .title(request.getTitle().toString())
                 .speciality(Collections.singletonList(specialityService.findById(request.getSpecialityId(), Speciality.class)))
+                .gender(request.getGender().toString())
                 .registrationNumber(request.getRegistrationNumber())
                 .nidNumber(request.getNidNumber())
-                .fee(request.getFee())
                 .user(user)
                 .build();
     }
