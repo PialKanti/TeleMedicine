@@ -10,6 +10,7 @@ import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 import { login } from '../../../services/auth';
 import { HttpStatusCode } from 'axios';
+import useAuthStore from '../../../../stores/store';
 
 const LoginPage = () => {
     const [loading, setLoading] = useState(false);
@@ -21,11 +22,17 @@ const LoginPage = () => {
     const router = useRouter();
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
+    const { token, setToken } = useAuthStore();
+    console.log('Initial token = ', token);
+
     const handleLogin = async () => {
         setLoading(true);
         try {
             const result = await login(username, password);
             if (result.status === HttpStatusCode.Ok) {
+                setToken(result.data.access_token);
+
+                console.log('Final token = ', token);
             }
             console.log(result);
         } catch (error) {
