@@ -8,14 +8,32 @@ import { Password } from 'primereact/password';
 import { LayoutContext } from '../../../../layout/context/layoutcontext';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
+import { login } from '../../../services/auth';
+import { HttpStatusCode } from 'axios';
 
 const LoginPage = () => {
+    const [loading, setLoading] = useState(false);
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [checked, setChecked] = useState(false);
     const { layoutConfig } = useContext(LayoutContext);
 
     const router = useRouter();
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
+
+    const handleLogin = async () => {
+        setLoading(true);
+        try {
+            const result = await login(username, password);
+            if (result.status === HttpStatusCode.Ok) {
+            }
+            console.log(result);
+        } catch (error) {
+            console.log('Error occurred: ', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className={containerClassName}>
@@ -43,18 +61,27 @@ const LoginPage = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
-                                Email
+                            <label htmlFor="username" className="block text-900 text-xl font-medium mb-2">
+                                Username
                             </label>
-                            <InputText id="email1" type="text" placeholder="Email address"
-                                       className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
+                            <InputText id="username"
+                                       type="text"
+                                       value={username}
+                                       onChange={(e) => setUsername(e.target.value)}
+                                       placeholder="Enter username"
+                                       className="w-full md:w-30rem mb-5"
+                                       style={{ padding: '1rem' }} />
 
                             <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
                                 Password
                             </label>
-                            <Password inputId="password1" value={password} onChange={(e) => setPassword(e.target.value)}
-                                      placeholder="Password" toggleMask className="w-full mb-5"
-                                      inputClassName="w-full p-3 md:w-30rem"></Password>
+                            <Password inputId="password1"
+                                      value={password}
+                                      onChange={(e) => setPassword(e.target.value)}
+                                      placeholder="Enter password"
+                                      toggleMask className="w-full mb-5"
+                                      feedback={false}
+                                      inputClassName="w-full p-3 md:w-30rem" />
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">
                                 <div className="flex align-items-center">
@@ -68,8 +95,10 @@ const LoginPage = () => {
                                     Forgot password?
                                 </a>
                             </div>
-                            <Button label="Sign In" className="w-full p-3 text-xl"
-                                    onClick={() => router.push('/')}></Button>
+                            <Button label="Sign In"
+                                    className="w-full p-3 text-xl"
+                                    loading={loading}
+                                    onClick={handleLogin}></Button>
                         </div>
                     </div>
                 </div>

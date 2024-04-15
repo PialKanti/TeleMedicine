@@ -19,4 +19,17 @@ const registerAsDoctor = async (formData) => {
     }
 };
 
-export { registerAsPatient, registerAsDoctor };
+const login = async (username, password) => {
+    try {
+        const data = {
+            username: username,
+            password: password
+        };
+        return await axiosInstance.post(endpoints.auth.login, data);
+    } catch (error) {
+        console.error('Error during login : ', error);
+        throw error;
+    }
+};
+
+export { registerAsPatient, registerAsDoctor, login };
