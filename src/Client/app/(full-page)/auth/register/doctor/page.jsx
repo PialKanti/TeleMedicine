@@ -8,10 +8,12 @@ import { Dropdown } from 'primereact/dropdown';
 import { getGenders, getSpecialities, getTitles } from '../../../../services/lookup';
 import { LayoutContext } from '../../../../../layout/context/layoutcontext';
 import { registerAsDoctor } from '../../../../services/auth';
+import { useRouter } from 'next/navigation';
 
 const RegisterDoctorPage = () => {
     const { layoutConfig } = useContext(LayoutContext);
 
+    const router = useRouter();
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
     const [titles, setTitles] = useState([]);
@@ -83,7 +85,8 @@ const RegisterDoctorPage = () => {
                             <div>
                                 <span className="text-gray-500 font-medium">Have an account?</span>
                                 <a className="font-medium no-underline ml-1 text-right cursor-pointer"
-                                   style={{ color: 'var(--primary-color)' }}>
+                                   style={{ color: 'var(--primary-color)' }}
+                                   onClick={() => router.push('/auth/login')}>
                                     Login
                                 </a>
                             </div>

@@ -82,7 +82,8 @@ const RegisterPage = () => {
                             <div>
                                 <span className="text-gray-500 font-medium">Have an account?</span>
                                 <a className="font-medium no-underline ml-1 text-right cursor-pointer"
-                                   style={{ color: 'var(--primary-color)' }}>
+                                   style={{ color: 'var(--primary-color)' }}
+                                   onClick={() => router.push('/auth/login')}>
                                     Login
                                 </a>
                             </div>

@@ -35,7 +35,8 @@ const LoginPage = () => {
                             <div>
                                 <span className="text-gray-500 font-medium">Not registered yet?</span>
                                 <a className="font-medium no-underline ml-1 text-right cursor-pointer"
-                                   style={{ color: 'var(--primary-color)' }}>
+                                   style={{ color: 'var(--primary-color)' }}
+                                   onClick={() => router.push('/auth/register')}>
                                     Register
                                 </a>
                             </div>
