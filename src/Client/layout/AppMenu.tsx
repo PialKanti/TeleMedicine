@@ -16,6 +16,13 @@ const AppMenu = () => {
             items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
         },
         {
+            label: 'Doctors',
+            items: [
+                { label: 'Approved', icon: 'pi pi-fw pi-check' },
+                { label: 'Pending', icon: 'pi pi-fw pi-clock' }
+            ]
+        },
+        {
             label: 'UI Components',
             items: [
                 { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
@@ -40,7 +47,12 @@ const AppMenu = () => {
             label: 'Prime Blocks',
             items: [
                 { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', to: '/blocks', badge: 'NEW' },
-                { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: 'https://blocks.primereact.org', target: '_blank' }
+                {
+                    label: 'All Blocks',
+                    icon: 'pi pi-fw pi-globe',
+                    url: 'https://blocks.primereact.org',
+                    target: '_blank'
+                }
             ]
         },
         {
@@ -175,11 +187,13 @@ const AppMenu = () => {
         <MenuProvider>
             <ul className="layout-menu">
                 {model.map((item, i) => {
-                    return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator"></li>;
+                    return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> :
+                        <li className="menu-separator"></li>;
                 })}
 
                 <Link href="https://blocks.primereact.org" target="_blank" style={{ cursor: 'pointer' }}>
-                    <img alt="Prime Blocks" className="w-full mt-3" src={`/layout/images/banner-primeblocks${layoutConfig.colorScheme === 'light' ? '' : '-dark'}.png`} />
+                    <img alt="Prime Blocks" className="w-full mt-3"
+                         src={`/layout/images/banner-primeblocks${layoutConfig.colorScheme === 'light' ? '' : '-dark'}.png`} />
                 </Link>
             </ul>
         </MenuProvider>
