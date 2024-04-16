@@ -53,7 +53,7 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
 
         var page = repository.findAll(specification, pageable).map(entity ->
                 new DoctorResponse(entity.getId(), entity.getTitle(), entity.getUser().getFirstName(), entity.getUser().getLastName(),
-                        entity.getUser().getEmail(), entity.getUser().getPhoneNo(), entity.getSpeciality(), entity.getGender(),
+                        entity.getUser().getEmail(), entity.getUser().getPhoneNo(), entity.getSpecialities(), entity.getGender(),
                         entity.getRegistrationNumber(), entity.getNidNumber())
         );
 
@@ -74,7 +74,7 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
         return Doctor
                 .builder()
                 .title(request.getTitle().toString())
-                .speciality(Collections.singletonList(specialityService.findById(request.getSpecialityId(), Speciality.class)))
+                .specialities(Collections.singletonList(specialityService.findById(request.getSpecialityId(), Speciality.class)))
                 .gender(request.getGender().toString())
                 .registrationNumber(request.getRegistrationNumber())
                 .nidNumber(request.getNidNumber())

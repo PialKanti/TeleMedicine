@@ -3,6 +3,7 @@ package com.codecraftershub.telemedicine.controllers;
 import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
 import com.codecraftershub.telemedicine.dtos.requests.users.SpecialityCreateRequest;
 import com.codecraftershub.telemedicine.dtos.requests.users.SpecialityUpdateRequest;
+import com.codecraftershub.telemedicine.dtos.responses.doctors.DoctorResponse;
 import com.codecraftershub.telemedicine.entities.user.doctor.Speciality;
 import com.codecraftershub.telemedicine.services.user.SpecialityService;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +53,13 @@ public class SpecialityController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{id}/doctors")
+    public ResponseEntity<BasePaginatedResponse<DoctorResponse>> findDoctorsBySpecialityId(@PathVariable long id,
+                                                                                           @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                                                                           @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(service.findAllDoctorsBySpeciality(id, pageable));
     }
 }

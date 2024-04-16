@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.List;
 
 @Entity
-@NamedEntityGraph(name = "Doctor.user", attributeNodes = @NamedAttributeNode("user"))
+@NamedEntityGraph(name = "DoctorEntityGraph", attributeNodes = {@NamedAttributeNode("user"), @NamedAttributeNode("specialities")})
 @Table(name = "doctors")
 @SuperBuilder
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class Doctor extends AuditableEntity {
     @Column(nullable = false)
     @ManyToMany
     @JoinTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
-    private List<Speciality> speciality;
+    private List<Speciality> specialities;
     private String gender;
     @Column(name = "registration_no", nullable = false)
     private String registrationNumber;
