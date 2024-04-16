@@ -7,6 +7,7 @@ import com.codecraftershub.telemedicine.dtos.responses.users.UserResponse;
 import com.codecraftershub.telemedicine.entities.user.Role;
 import com.codecraftershub.telemedicine.entities.user.User;
 import com.codecraftershub.telemedicine.enums.UserRole;
+import com.codecraftershub.telemedicine.exceptions.DuplicateUserInfoException;
 import com.codecraftershub.telemedicine.exceptions.PasswordMismatchException;
 import com.codecraftershub.telemedicine.repositories.user.RoleRepository;
 import com.codecraftershub.telemedicine.repositories.user.UserRepository;
@@ -40,6 +41,25 @@ public class UserService extends BaseService<User, Long, RegistrationRequest, Us
         this.repository = repository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserResponse create(RegistrationRequest request) {
+        checkForDuplicates(request);
+
+        return super.create(request);
+    }
+
+    private void checkForDuplicates(RegistrationRequest request) {
+        if (repository.existsByUsername(request.getUsername())) {
+            throw new DuplicateUserInfoException(String.format("User with username [%s] already exists", request.getUsername()));
+        }
+        if (repository.existsByEmail(request.getEmail())) {
+            throw new DuplicateUserInfoException(String.format("User with email [%s] already exists", request.getEmail()));
+        }
+        if (repository.existsByPhoneNo(request.getPhoneNo())) {
+            throw new DuplicateUserInfoException(String.format("User with phone number [%s] already exists", request.getPhoneNo()));
+        }
     }
 
     @Override

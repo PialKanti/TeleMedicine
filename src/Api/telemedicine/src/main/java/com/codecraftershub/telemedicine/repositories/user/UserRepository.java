@@ -11,9 +11,14 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends BaseRepository<User, Long> {
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByPhoneNo(String phoneNo);
+
     @EntityGraph(value = "User.roles", type = EntityGraph.EntityGraphType.FETCH)
     <T> Optional<T> findByUsername(String username, Class<T> type);
-    boolean existsByUsername(String username);
 
     @Modifying
     @Query("delete from User u where u.username = :username")
