@@ -1,6 +1,7 @@
 package com.codecraftershub.telemedicine.entities.user.doctor;
 
 import com.codecraftershub.telemedicine.entities.common.AuditableEntity;
+import com.codecraftershub.telemedicine.entities.common.NonAuditableEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class Experience extends AuditableEntity {
+public class Experience extends NonAuditableEntity {
     @Column(nullable = false)
     private String designation;
     @Column(nullable = false)
