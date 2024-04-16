@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.List;
 
 @Entity
+@NamedEntityGraph(name = "Doctor.user", attributeNodes = @NamedAttributeNode("user"))
 @Table(name = "doctors")
 @SuperBuilder
 @NoArgsConstructor

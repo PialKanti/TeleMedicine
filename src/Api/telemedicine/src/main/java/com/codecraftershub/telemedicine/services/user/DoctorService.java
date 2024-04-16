@@ -12,10 +12,14 @@ import com.codecraftershub.telemedicine.repositories.user.UserRepository;
 import com.codecraftershub.telemedicine.services.BaseService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+
+import static com.codecraftershub.telemedicine.specifications.DoctorSpecification.isActive;
+import static com.codecraftershub.telemedicine.specifications.DoctorSpecification.isApproved;
 
 @Service
 public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationRequest, DoctorUpdateRequest, UserResponse> {
@@ -39,7 +43,8 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
     }
 
     public <T> BasePaginatedResponse<T> findAllActiveAndApprovedDoctors(Pageable pageable, Class<T> type) {
-        var page = repository.findAllActiveAndApprovedDoctors(pageable, type);
+        var specification = Specification.where(isActive(true, type)).and(isApproved(true, type));
+        var page = repository.findAll(specification, pageable);
 
         return super.convertPageToResponse(page);
     }
