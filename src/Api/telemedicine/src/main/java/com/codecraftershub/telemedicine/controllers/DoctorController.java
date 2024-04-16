@@ -1,6 +1,7 @@
 package com.codecraftershub.telemedicine.controllers;
 
 import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
+import com.codecraftershub.telemedicine.dtos.DoctorSearchCriteria;
 import com.codecraftershub.telemedicine.dtos.projections.doctors.DoctorProjection;
 import com.codecraftershub.telemedicine.dtos.responses.GenericResponse;
 import com.codecraftershub.telemedicine.dtos.responses.doctors.ApprovalResponse;
@@ -29,10 +30,13 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity<BasePaginatedResponse<DoctorResponse>> findAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+    public ResponseEntity<BasePaginatedResponse<DoctorResponse>> findAll(@RequestParam(name = "approved", required = false) Boolean approved,
+                                                                         @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                                          @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return ResponseEntity.ok(service.findAllActiveAndApprovedDoctors(pageable));
+        var criteria = new DoctorSearchCriteria(approved);
+
+        return ResponseEntity.ok(service.findAllByCriteria(criteria, pageable));
     }
 
     @GetMapping(value = "/{id}/approve")
@@ -59,7 +63,7 @@ public class DoctorController {
     @GetMapping(value = "/{id}/appointments/histories")
     public ResponseEntity<BasePaginatedResponse<Appointment>> findAllAppointmentHistories(@PathVariable(name = "id") Long id,
                                                                                           @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-                                                                                          @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize){
+                                                                                          @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return ResponseEntity.ok(appointmentService.getDoctorAppointmentHistories(id, pageable, Appointment.class));
     }
