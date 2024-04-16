@@ -18,7 +18,7 @@ const AppMenu = () => {
         {
             label: 'Doctors',
             items: [
-                { label: 'Approved', icon: 'pi pi-fw pi-check' },
+                { label: 'Approved', icon: 'pi pi-fw pi-check', to: '/doctors/approved' },
                 { label: 'Pending', icon: 'pi pi-fw pi-clock' }
             ]
         },

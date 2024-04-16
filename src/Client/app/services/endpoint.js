@@ -11,6 +11,10 @@ const endpoints = {
         bloodGroup: '/lookups/bloodgroup',
         title: '/lookups/title',
         speciality: '/specialities?page=0&pageSize=100'
+    },
+    doctors: {
+        approved: '/doctors?approved=true',
+        pending: '/doctors?approved=false'
     }
 };
 
