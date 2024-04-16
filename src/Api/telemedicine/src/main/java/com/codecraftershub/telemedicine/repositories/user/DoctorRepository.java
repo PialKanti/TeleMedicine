@@ -15,5 +15,5 @@ public interface DoctorRepository extends BaseRepository<Doctor, Long> {
     <T> Page<T> findAllActiveAndApprovedDoctors(Pageable pageable, Class<T> type);
 
     @EntityGraph(value = "Doctor.user")
-    <T> Page<T> findAll(Specification<T> specification, Pageable pageable);
+    Page<Doctor> findAll(Specification<Doctor> specification, Pageable pageable);
 }

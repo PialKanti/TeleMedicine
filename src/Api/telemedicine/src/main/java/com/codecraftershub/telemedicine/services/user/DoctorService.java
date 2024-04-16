@@ -3,6 +3,7 @@ package com.codecraftershub.telemedicine.services.user;
 import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
 import com.codecraftershub.telemedicine.dtos.auth.DoctorRegistrationRequest;
 import com.codecraftershub.telemedicine.dtos.requests.users.DoctorUpdateRequest;
+import com.codecraftershub.telemedicine.dtos.responses.doctors.DoctorResponse;
 import com.codecraftershub.telemedicine.dtos.responses.users.UserResponse;
 import com.codecraftershub.telemedicine.entities.user.doctor.Doctor;
 import com.codecraftershub.telemedicine.entities.user.User;
@@ -42,11 +43,22 @@ public class DoctorService extends BaseService<Doctor, Long, DoctorRegistrationR
         return repository.save(entityToBeUpdated);
     }
 
-    public <T> BasePaginatedResponse<T> findAllActiveAndApprovedDoctors(Pageable pageable, Class<T> type) {
-        var specification = Specification.where(isActive(true, type)).and(isApproved(true, type));
-        var page = repository.findAll(specification, pageable);
+    public BasePaginatedResponse<DoctorResponse> findAllActiveAndApprovedDoctors(Pageable pageable) {
+        var specification = Specification.where(isActive(true)).and(isApproved(true));
+        var page = repository.findAll(specification, pageable).map(entity ->
+                new DoctorResponse(entity.getId(), entity.getTitle(), entity.getUser().getFirstName(), entity.getUser().getLastName(),
+                        entity.getUser().getEmail(), entity.getUser().getPhoneNo(), entity.getSpeciality(), entity.getGender(),
+                        entity.getRegistrationNumber(), entity.getNidNumber())
+        );
 
-        return super.convertPageToResponse(page);
+        return BasePaginatedResponse
+                .<DoctorResponse>builder()
+                .page(page.getNumber())
+                .pageSize(page.getSize())
+                .totalItems(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .data(page.getContent())
+                .build();
     }
 
     @Override

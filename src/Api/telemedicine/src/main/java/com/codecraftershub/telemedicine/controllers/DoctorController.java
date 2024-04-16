@@ -4,6 +4,7 @@ import com.codecraftershub.telemedicine.dtos.BasePaginatedResponse;
 import com.codecraftershub.telemedicine.dtos.projections.doctors.DoctorProjection;
 import com.codecraftershub.telemedicine.dtos.responses.GenericResponse;
 import com.codecraftershub.telemedicine.dtos.responses.doctors.ApprovalResponse;
+import com.codecraftershub.telemedicine.dtos.responses.doctors.DoctorResponse;
 import com.codecraftershub.telemedicine.entities.user.Appointment;
 import com.codecraftershub.telemedicine.entities.user.doctor.Doctor;
 import com.codecraftershub.telemedicine.services.user.AppointmentService;
@@ -28,10 +29,10 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity<BasePaginatedResponse<DoctorProjection>> findAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
-                                                                           @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
+    public ResponseEntity<BasePaginatedResponse<DoctorResponse>> findAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                                                         @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return ResponseEntity.ok(service.findAllActiveAndApprovedDoctors(pageable, DoctorProjection.class));
+        return ResponseEntity.ok(service.findAllActiveAndApprovedDoctors(pageable));
     }
 
     @GetMapping(value = "/{id}/approve")
