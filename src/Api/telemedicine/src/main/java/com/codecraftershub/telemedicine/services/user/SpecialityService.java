@@ -34,7 +34,7 @@ public class SpecialityService extends BaseService<Speciality, Long, SpecialityC
     public BasePaginatedResponse<DoctorResponse> findAllDoctorsBySpeciality(Long specialityId, Pageable pageable) {
         var speciality = findById(specialityId, Speciality.class);
 
-        var page = doctorRepository.findAllBySpecialities(Collections.singletonList(speciality), pageable).map(entity ->
+        var page = doctorRepository.findAllBySpecialitiesAndIsApprovedTrue(Collections.singletonList(speciality), pageable).map(entity ->
                 new DoctorResponse(entity.getId(), entity.getTitle(), entity.getUser().getFirstName(), entity.getUser().getLastName(),
                         entity.getUser().getEmail(), entity.getUser().getPhoneNo(), entity.getSpecialities(), entity.getGender(),
                         entity.getRegistrationNumber(), entity.getNidNumber())

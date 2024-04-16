@@ -21,5 +21,5 @@ public interface DoctorRepository extends BaseRepository<Doctor, Long> {
     Page<Doctor> findAll(Specification<Doctor> specification, Pageable pageable);
 
     @EntityGraph(value = "DoctorEntityGraph")
-    Page<Doctor> findAllBySpecialities(List<Speciality> specialities, Pageable pageable);
+    Page<Doctor> findAllBySpecialitiesAndIsApprovedTrue(List<Speciality> specialities, Pageable pageable);
 }
