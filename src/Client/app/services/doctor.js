@@ -10,4 +10,13 @@ const getApprovedDoctors = async () => {
     }
 };
 
-export { getApprovedDoctors };
+const getPendingDoctors = async () => {
+    try {
+        return await axiosInstance.get(endpoints.doctors.pending);
+    } catch (error) {
+        console.error('Error during fetching pending doctors list : ', error);
+        throw error;
+    }
+};
+
+export { getApprovedDoctors, getPendingDoctors };

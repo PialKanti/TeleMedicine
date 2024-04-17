@@ -3,17 +3,17 @@
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import React, { useEffect, useState } from 'react';
-import { getApprovedDoctors } from '../../../services/doctor';
+import { getApprovedDoctors, getPendingDoctors } from '../../../services/doctor';
 import { getTitles } from '../../../services/lookup';
 
-const ApprovedDoctorsPage = () => {
+const PendingDoctorsPage = () => {
     const [doctors, setDoctors] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             const titleResponse = await getTitles();
 
-            const result = await getApprovedDoctors();
+            const result = await getPendingDoctors();
             setDoctors(processData(result.data.data, titleResponse.data));
         };
 
@@ -22,19 +22,22 @@ const ApprovedDoctorsPage = () => {
 
     const processData = (items, titles) => {
         console.log(titles);
-        return items.map(item => ({ ...item, name: getTitleNameByCode(titles, item.title) + ' ' + item.firstName + ' ' + item.lastName }));
+        return items.map(item => ({
+            ...item,
+            name: getTitleNameByCode(titles, item.title) + ' ' + item.firstName + ' ' + item.lastName
+        }));
     };
 
     const getTitleNameByCode = (titles, code) => {
         const title = titles.find(title => title.code === code);
-        return title ? title.name : "";
+        return title ? title.name : '';
     };
 
     return (
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Approved Doctors</h5>
+                    <h5>Pending Doctors</h5>
                     <DataTable value={doctors}>
                         <Column field="name" header="Name"></Column>
                         <Column field="email" header="Email"></Column>
@@ -48,4 +51,4 @@ const ApprovedDoctorsPage = () => {
     );
 };
 
-export default ApprovedDoctorsPage;
+export default PendingDoctorsPage;
