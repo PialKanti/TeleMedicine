@@ -19,4 +19,13 @@ const getPendingDoctors = async () => {
     }
 };
 
-export { getApprovedDoctors, getPendingDoctors };
+const approveDoctor = async (id) => {
+    try {
+        return await axiosInstance.get(endpoints.doctors.approve.replace('{id}', id));
+    } catch (error) {
+        console.error('Error during approving a doctor : ', error);
+        throw error;
+    }
+};
+
+export { getApprovedDoctors, getPendingDoctors, approveDoctor };

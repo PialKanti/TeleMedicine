@@ -14,7 +14,8 @@ const endpoints = {
     },
     doctors: {
         approved: '/doctors?approved=true',
-        pending: '/doctors?approved=false'
+        pending: '/doctors?approved=false',
+        approve: '/doctors/{id}/approve',
     }
 };
 
