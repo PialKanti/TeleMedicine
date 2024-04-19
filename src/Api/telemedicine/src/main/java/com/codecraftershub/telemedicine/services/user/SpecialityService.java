@@ -5,10 +5,13 @@ import com.codecraftershub.telemedicine.dtos.requests.users.SpecialityCreateRequ
 import com.codecraftershub.telemedicine.dtos.requests.users.SpecialityUpdateRequest;
 import com.codecraftershub.telemedicine.dtos.responses.doctors.DoctorResponse;
 import com.codecraftershub.telemedicine.entities.user.doctor.Speciality;
+import com.codecraftershub.telemedicine.enums.UserRole;
 import com.codecraftershub.telemedicine.repositories.user.DoctorRepository;
 import com.codecraftershub.telemedicine.repositories.user.SpecialityRepository;
 import com.codecraftershub.telemedicine.services.BaseService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -26,7 +29,21 @@ public class SpecialityService extends BaseService<Speciality, Long, SpecialityC
 
     @Override
     public <T> BasePaginatedResponse<T> findAll(Pageable pageable, Class<T> type) {
-        var page = repository.findAllActive(pageable, type);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            return super.convertPageToResponse(repository.findAllActive(pageable, type));
+        }
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_" + UserRole.ADMIN));
+
+        Page<T> page;
+        if (isAdmin) {
+            page = repository.findAllBy(pageable, type);
+        } else {
+            page = repository.findAllActive(pageable, type);
+        }
 
         return super.convertPageToResponse(page);
     }
