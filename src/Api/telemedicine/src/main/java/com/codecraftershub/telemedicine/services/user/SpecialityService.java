@@ -62,11 +62,11 @@ public class SpecialityService extends BaseService<Speciality, Long, SpecialityC
 
     @Override
     protected Speciality convertToUpdateEntity(Speciality entity, SpecialityUpdateRequest request) {
-        return Speciality
-                .builder()
-                .description(request.getDescription())
-                .isActive(request.getIsActive() != null ? request.getIsActive() : entity.isActive())
-                .build();
+        entity.setName(request.getName());
+        entity.setDescription(request.getDescription());
+        entity.setActive(request.getIsActive() != null ? request.getIsActive() : entity.isActive());
+
+        return entity;
     }
 
     @Override
