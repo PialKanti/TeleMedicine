@@ -56,7 +56,7 @@ public class SpecialityService extends BaseService<Speciality, Long, SpecialityC
                 .builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .isActive(true)
+                .isActive(request.getIsActive() != null ? request.getIsActive() : true)
                 .build();
     }
 
