@@ -16,6 +16,10 @@ const endpoints = {
         approved: '/doctors?approved=true',
         pending: '/doctors?approved=false',
         approve: '/doctors/{id}/approve',
+    },
+    specialities:{
+        getAll: '/specialities',
+        update: '/specialities/{id}'
     }
 };
 

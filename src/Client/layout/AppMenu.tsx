@@ -16,6 +16,12 @@ const AppMenu = () => {
             items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
         },
         {
+            label: 'Specialities',
+            items: [
+                { label: 'List', icon: 'pi pi-fw pi-list', to: '/specialities' }
+            ]
+        },
+        {
             label: 'Doctors',
             items: [
                 { label: 'Approved', icon: 'pi pi-fw pi-check', to: '/doctors/approved' },
