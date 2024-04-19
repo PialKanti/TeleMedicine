@@ -3,7 +3,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import React, { useEffect, useRef, useState } from 'react';
-import { createSpeciality, getAllSpecialities, updateSpeciality } from '../../services/speciality';
+import { createSpeciality, deleteSpeciality, getAllSpecialities, updateSpeciality } from '../../services/speciality';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -29,7 +29,6 @@ const SpecialitiesPage = () => {
 
     const fetchData = async () => {
         const result = await getAllSpecialities();
-        console.log(result);
         setSpecialities(result.data.data);
     };
 
@@ -53,6 +52,7 @@ const SpecialitiesPage = () => {
 
     const create = async () => {
         const formData = getFormData();
+
         try {
             const result = await createSpeciality(formData);
             if (result.status === HttpStatusCode.Created) {
@@ -81,7 +81,7 @@ const SpecialitiesPage = () => {
 
     const update = async () => {
         const formData = getFormData();
-        console.log('form data: ', formData);
+
         try {
             const result = await updateSpeciality(id, formData);
             if (result.status === HttpStatusCode.Ok) {
@@ -105,6 +105,32 @@ const SpecialitiesPage = () => {
             });
         } finally {
             closeDialog();
+        }
+    };
+
+    const deleteItem = async (rowData) => {
+        console.log(rowData);
+        try {
+            const result = await deleteSpeciality(rowData.id);
+            if (result.status === HttpStatusCode.NoContent) {
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `Deleted successfully`,
+                    life: 2000
+                });
+
+                setSpecialities(specialities.filter(speciality => speciality.id !== rowData.id));
+            }
+        } catch (error) {
+            console.log(error);
+
+            toast.current.show({
+                severity: 'error',
+                summary: 'Failed',
+                detail: `Delete failed`,
+                life: 2000
+            });
         }
     };
 
@@ -201,7 +227,8 @@ const SpecialitiesPage = () => {
                                 <div>
                                     <Button icon="pi pi-pencil" severity="primary" rounded text
                                             onClick={() => openDialog('Update', rowData)} />
-                                    <Button icon="pi pi-trash" severity="danger" rounded text />
+                                    <Button icon="pi pi-trash" severity="danger" rounded text
+                                            onClick={async () => await deleteItem(rowData)} />
                                 </div>
                             )}></Column>
                         </DataTable>

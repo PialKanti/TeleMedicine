@@ -20,7 +20,8 @@ const endpoints = {
     specialities:{
         getAll: '/specialities',
         create: '/specialities',
-        update: '/specialities/{id}'
+        update: '/specialities/{id}',
+        delete: '/specialities/{id}'
     }
 };
 

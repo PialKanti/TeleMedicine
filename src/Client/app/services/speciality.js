@@ -28,4 +28,13 @@ const updateSpeciality = async (id, formData) => {
     }
 };
 
-export { getAllSpecialities, createSpeciality, updateSpeciality };
+const deleteSpeciality = async (id) => {
+    try {
+        return await axiosInstance.delete(endpoints.specialities.delete.replace('{id}', id));
+    } catch (error) {
+        console.error('Error while deleting speciality: ', error);
+        throw error;
+    }
+};
+
+export { getAllSpecialities, createSpeciality, updateSpeciality, deleteSpeciality };
