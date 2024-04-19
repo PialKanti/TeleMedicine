@@ -10,6 +10,15 @@ const getAllSpecialities = async () => {
     }
 };
 
+const createSpeciality = async (formData) => {
+    try {
+        return await axiosInstance.post(endpoints.specialities.create, formData);
+    } catch (error) {
+        console.error('Error while creating new speciality: ', error);
+        throw error;
+    }
+};
+
 const updateSpeciality = async (id, formData) => {
     try {
         return await axiosInstance.put(endpoints.specialities.update.replace('{id}', id), formData);
@@ -19,4 +28,4 @@ const updateSpeciality = async (id, formData) => {
     }
 };
 
-export { getAllSpecialities, updateSpeciality };
+export { getAllSpecialities, createSpeciality, updateSpeciality };

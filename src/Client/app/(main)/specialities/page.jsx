@@ -3,7 +3,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import React, { useEffect, useRef, useState } from 'react';
-import { getAllSpecialities, updateSpeciality } from '../../services/speciality';
+import { createSpeciality, getAllSpecialities, updateSpeciality } from '../../services/speciality';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -18,7 +18,7 @@ const SpecialitiesPage = () => {
     const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [status, setStatus] = useState(true);
+    const [status, setStatus] = useState('');
 
     const statues = [
         { name: 'Active', code: true },
@@ -44,11 +44,40 @@ const SpecialitiesPage = () => {
 
     const dialogFooter = (
         <div>
-            <Button label="Cancel" severity="danger" icon="pi pi-times" onClick={() => setDialogVisible(false)}
+            <Button label="Cancel" severity="danger" icon="pi pi-times" onClick={() => closeDialog()}
                     outlined />
-            <Button label="Save" icon="pi pi-check" outlined onClick={async () => await update()} />
+            <Button label="Save" icon="pi pi-check" outlined
+                    onClick={async () => (id) ? await update() : await create()} />
         </div>
     );
+
+    const create = async () => {
+        const formData = getFormData();
+        try {
+            const result = await createSpeciality(formData);
+            if (result.status === HttpStatusCode.Created) {
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `Created successfully`,
+                    life: 2000
+                });
+
+                await fetchData();
+            }
+        } catch (error) {
+            console.log(error);
+
+            toast.current.show({
+                severity: 'error',
+                summary: 'Failed',
+                detail: `Create failed`,
+                life: 2000
+            });
+        } finally {
+            closeDialog();
+        }
+    };
 
     const update = async () => {
         const formData = getFormData();
@@ -69,13 +98,13 @@ const SpecialitiesPage = () => {
             console.log(error);
 
             toast.current.show({
-                severity: 'danger',
+                severity: 'error',
                 summary: 'Failed',
                 detail: `Updated failed`,
                 life: 2000
             });
         } finally {
-            setDialogVisible(false);
+            closeDialog();
         }
     };
 
@@ -87,13 +116,27 @@ const SpecialitiesPage = () => {
         };
     };
 
+    const closeDialog = () => {
+        setDialogVisible(false);
+        clearForm();
+    };
+
+    const clearForm = () => {
+        setId('');
+        setName('');
+        setDescription('');
+        setStatus('');
+    };
+
     const openDialog = (title, rowData) => {
         setDialogTitle(title);
         setDialogVisible(true);
-        setId(rowData.id);
-        setName(rowData.name);
-        setDescription(rowData.description);
-        setStatus(rowData.active);
+        if (rowData) {
+            setId(rowData.id);
+            setName(rowData.name);
+            setDescription(rowData.description);
+            setStatus(rowData.active);
+        }
     };
 
     return (
@@ -103,7 +146,7 @@ const SpecialitiesPage = () => {
                     footer={dialogFooter}
                     visible={dialogVisible}
                     style={{ width: '25vw' }}
-                    onHide={() => setDialogVisible(false)}>
+                    onHide={() => closeDialog()}>
                 <div className="field">
                     <label htmlFor="name" className="block font-medium mb-2">
                         Name
@@ -142,7 +185,11 @@ const SpecialitiesPage = () => {
             <div className="grid">
                 <div className="col-12">
                     <div className="card">
-                        <h5>Pending Doctors</h5>
+                        <div className="flex justify-content-between mb-3">
+                            <h5>All Specialities</h5>
+                            <Button label="Create" icon="pi pi-plus" size="small"
+                                    onClick={() => openDialog('Create')} />
+                        </div>
                         <DataTable value={specialities}>
                             <Column field="index" header="#"
                                     body={(rowData, rowIndex) => rowIndex.rowIndex + 1}></Column>
