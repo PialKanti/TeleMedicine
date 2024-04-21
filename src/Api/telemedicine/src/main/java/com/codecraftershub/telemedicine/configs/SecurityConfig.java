@@ -29,7 +29,6 @@ public class SecurityConfig {
             "/api/v1/auth/register/**",
             "/api/v1/auth/login",
             "/api/v1/lookups/**",
-            "/api/v1/specialities",
             "/error/**",
             "/swagger-resources",
             "/swagger-resources/**",
@@ -49,6 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request.requestMatchers(WHITELIST_URLS)
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/doctors/{id}/approve").hasRole(UserRole.ADMIN.toString())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/specialities").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
