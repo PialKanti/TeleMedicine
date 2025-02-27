@@ -1,0 +1,13 @@
+services:
+  db:
+    container_name: postgresql
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin@123
+      POSTGRES_DB: telemedicine_db
+    volumes:
+      - ~/apps/postgres/telemedicine:/var/lib/postgresql/data
+
